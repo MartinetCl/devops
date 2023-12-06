@@ -1,10 +1,10 @@
 const dotenv = require('dotenv');
 const express = require('express');
-const connection = require('./config').connection;
+const connection = require('./config');
 
 
 dotenv.config();
-
+//console.log(connection);
 const app = express();
 const PORT = process.env.PORT;
 
@@ -18,12 +18,15 @@ app.get('/health', (req, res) => {
 });
 
 // Route GET /get pour renvoyer "status: ok" et un itérateur "value"
-let iterator = 0;
-app.get('/get', (req, res) => {
-  iterator++;
- // sql attendu
+app.get('/get', async (req, res) => {
+  res.setHeader('Content-Type', 'text/json');
+  let response = connection.query("SELECT * FROM interator ORDER BY state DESC LIMIT 0, 1", (err, rows, fields) => {
+    if (err) {
+      console.log(err);
+    }
+    res.json({status: "ok", result: rows[0].state})
+  });
 
-  res.json({ status: 'ok', value: iterator });
 });
 
 // Route POST /add pour ajouter une valeur booléenne et renvoyer "status: ok"
@@ -31,16 +34,16 @@ app.post('/add', async (req, res) => {
   const { value } = req.body;
   // Vérifie si la valeur booléenne est présente dans le corps de la requête
   if (typeof value === 'boolean') {
-    // sql attendu
-    // Pour cet exemple, on renvoie simplement "status: ok"
-    let response = await connection.query("INSERT INTO `iterator-db`.interator (state) VALUES("+ value +");");
-
-    if (response.affectedRows) { 
-
-      res.status(200).json({ status: 'ok' });
-    } else {
-      res.status(500).json({error: "Error when we interact with database"})  
-    }
+    
+    connection.query("INSERT INTO `iterator-db`.interator (state) VALUES(?);", [value], (err, rows, fields) => {
+      if (err) {
+        res.status(500).json({error: err});
+        throw err;
+      }
+      if (rows.affectedRows) {
+        res.json({status: "OK", message: "Iterator value update successfully"});
+      } 
+    });
 
   } else {
     // Si aucune valeur n'est fournie ou si ce n'est pas un booléen, renvoie une erreur
