@@ -24,7 +24,9 @@ app.get('/get', async (req, res) => {
     if (err) {
       console.log(err);
     }
-    res.json({status: "ok", result: rows[0].state})
+    if (rows.length == 1 && rows[0].state) {
+      res.json({status: "ok", result: rows[0].state})
+    }
   });
 
 });
