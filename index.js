@@ -7,6 +7,7 @@ dotenv.config();
 //console.log(connection);
 const app = express();
 const PORT = process.env.PORT;
+app.set('trust proxy', 1);
 
 // Middleware pour parser le corps des requêtes en JSON
 app.use(express.json());
