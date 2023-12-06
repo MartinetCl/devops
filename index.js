@@ -1,6 +1,10 @@
+const dotenv = require('dotenv');
 const express = require('express');
 
+dotenv.config();
+
 const app = express();
+const PORT = process.env.PORT;
 
 // Middleware pour parser le corps des requêtes en JSON
 app.use(express.json());
@@ -35,7 +39,7 @@ app.post('/add', (req, res) => {
 });
 
 // Port d'écoute du serveur
-const PORT = 4000;
+
 app.listen(PORT, () => {
   console.log(`Serveur démarré sur le port ${PORT}`);
 });
