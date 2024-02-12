@@ -12,6 +12,10 @@ app.set('trust proxy', 1);
 // Middleware pour parser le corps des requêtes en JSON
 app.use(express.json());
 
+app.get('/', async(req, res) => {
+  res.send('Hello world');
+})
+
 // Route GET /health pour renvoyer "status: ok"
 app.get('/health', (req, res) => {
   // sql attendu

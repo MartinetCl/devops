@@ -4,13 +4,15 @@ const { exit } = require('process');
 
 dotenv.config();
 
+const host = process.env.HOST_MYSQL || 'localhost';
+const user = process.env.USER_MYSQL || 'root';
+const password =  process.env.PASSWD_MYSQL || ' ';
+const database= process.env.DB_NAME || 'interator-db';
 
-const connection = mysql.createConnection({
-    host: process.env.HOST_MYSQL || 'localhost',
-    user: process.env.USER_MYSQL || 'root',
-    password: process.env.PASSWD_MYSQL || ' ',
-    database: process.env.DB_NAME || 'interator-db'
-  });
+const url = `myslq://${user}:${password}@${host}/${database}`;
+
+
+const connection = mysql.createPool(url);
 
   if (!connection) {
     console.log("Error when we connect to database!");
