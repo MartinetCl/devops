@@ -1,0 +1,32 @@
+version: '3.8'
+services:
+  app:
+    build: .
+    networks:
+      - mysql_network
+
+  nginx:
+    image: nginx:latest
+    networks:
+      - mysql_network
+    volumes:
+      - ./nginx/nginx.conf:/etc/nginx/nginx.conf
+    depends_on:
+      - app
+
+  db:
+    image: mysql:8.1.0
+    networks:
+      - mysql_network
+    command: --init-file /data/application/init.sql
+    volumes:
+        - ./mysqlInit.sql:/data/application/init.sql
+    environment:
+      MYSQL_ROOT_PASSWORD: rootpassword
+      MYSQL_DATABASE: mydatabase
+      MYSQL_USER: myuser
+      MYSQL_PASSWORD: mypassword
+
+networks:
+  mysql_network:
+    driver: bridge
