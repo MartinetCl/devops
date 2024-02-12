@@ -9,7 +9,7 @@ const connection = mysql.createConnection({
     host: process.env.HOST_MYSQL || 'localhost',
     user: process.env.USER_MYSQL || 'root',
     password: process.env.PASSWD_MYSQL || ' ',
-    database: process.env.DB_NAME || 'iterator-db'
+    database: process.env.DB_NAME || 'interator-db'
   });
 
   if (!connection) {
