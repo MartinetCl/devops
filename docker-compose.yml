@@ -6,7 +6,7 @@ services:
       - mysql_network
 
   nginx:
-    image: nginx:latest
+    image: nginx:{{ nginx_version }}
     networks:
       - mysql_network
     volumes:
@@ -15,17 +15,17 @@ services:
       - app
 
   db:
-    image: mysql:8.1.0
+    image: mysql:{{ mysql_version }}
     networks:
       - mysql_network
     command: --init-file /data/application/init.sql
     volumes:
-        - ./mysqlInit.sql:/data/application/init.sql
+        - {{ mysql_volumes }}
     environment:
-      MYSQL_ROOT_PASSWORD: rootpassword
-      MYSQL_DATABASE: mydatabase
-      MYSQL_USER: myuser
-      MYSQL_PASSWORD: mypassword
+      MYSQL_ROOT_PASSWORD: {{ mysql_root_password }}
+      MYSQL_DATABASE: {{ mysql_database }}
+      MYSQL_USER: {{ mysql_user }}
+      MYSQL_PASSWORD: {{ mysql_password }}
 
 networks:
   mysql_network:
