@@ -6,7 +6,7 @@ services:
       - mysql_network
 
   nginx:
-    image: nginx:latest
+    image: nginx:1.25.3
     networks:
       - mysql_network
     volumes:
