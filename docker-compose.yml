@@ -20,7 +20,7 @@ services:
       - mysql_network
     command: --init-file /data/application/init.sql
     volumes:
-        - ./mysqlInit.sql:/data/application/init.sql
+        - ./mysql/mysqlInit.sql:/data/application/init.sql
     environment:
       MYSQL_ROOT_PASSWORD: rootpassword
       MYSQL_DATABASE: mydatabase
